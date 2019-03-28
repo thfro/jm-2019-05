@@ -9,7 +9,6 @@ import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -20,10 +19,11 @@ import javax.ws.rs.client.InvocationCallback;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.concurrent.Future;
-import java.util.logging.Logger;
 
-import static com.frotscher.demo.googleclient.GoogleApiResponse.*;
+import static com.frotscher.demo.googleclient.GoogleApiResponse.STATUS_INVALID_REQUEST;
+import static com.frotscher.demo.googleclient.GoogleApiResponse.STATUS_OVER_QUERY_LIMIT;
+import static com.frotscher.demo.googleclient.GoogleApiResponse.STATUS_REQUEST_DENIED;
+import static com.frotscher.demo.googleclient.GoogleApiResponse.STATUS_UNKNOWN_ERROR;
 import static org.junit.Assert.fail;
 
 /**
@@ -76,7 +76,7 @@ public class JaxRs20Client {
 							fail("Request to Google Geocoding API failed with status " + httpStatus);
 						}
 
-						GenericType<GoogleApiResponse<GeoLocation>> entityType = new GenericType<GoogleApiResponse<GeoLocation>>() {};
+						GenericType<GoogleApiResponse<GeoLocation>> entityType = new GenericType<>() {};
 						GoogleApiResponse<GeoLocation> apiResponse = response.readEntity(entityType);
 
 						failOnApiError(apiResponse, "Google Places API");
@@ -111,7 +111,7 @@ public class JaxRs20Client {
 											fail("Request to Google Places API failed with status " + httpStatus);
 										}
 
-                                        GenericType<GoogleApiResponse<Place>> gt = new GenericType<GoogleApiResponse<Place>>() {};
+                                        GenericType<GoogleApiResponse<Place>> gt = new GenericType<>() {};
                                         GoogleApiResponse<Place> places = response.readEntity(gt);
                                         System.out.println("JAX-RS thread retrieved train stations: " + places.getResults().size());
                                         places.getResults().forEach(place -> System.out.println("- " + place.getName()));
